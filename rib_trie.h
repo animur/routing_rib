@@ -13,6 +13,8 @@ class RibTrieNode
     std::map<byte, RibTrieNode *> _children;
 
   public:
+    void insertRouteFromTrie(RtableEntry& route);
+    void deleteRouteFromTrie(RtableEntry& route);
 };
 
-#endif //__RIB_TRIE_H`
+#endif //__RIB_TRIE_H
