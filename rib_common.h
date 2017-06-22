@@ -10,7 +10,17 @@
 #include <iostream>
 
 typedef uint32_t ipaddr;
-typedef uint8_t byte;
+typedef unsigned short byte;
+typedef unsigned int vrf;
+
+typedef enum {
+	RIB_ERR_START = 15,
+	RIB_ERR_INVALID_IP = 16,
+	RIB_ERR_INVALID_VRF = 17,
+	RIB_ERR_INVALID_METRIC = 15,
+	RIB_ERR_INVALID_IF = 15,
+}rib_err_t;
+
 
 class RtableEntry
 {
@@ -25,6 +35,7 @@ class RtableEntry
   public:
     RtableEntry(byte metric, ipaddr dst_ip, ipaddr gw, std::string if_name);
     void convStrToIp(ipaddr& ip, std::string str);
+	bool check(RtableEntry& route, rib_err_t& err_code) const;
     friend std::ostream& operator <<( std::ostream& out, const RtableEntry& route) ;
 
 };

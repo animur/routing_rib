@@ -7,15 +7,14 @@
 class Rib
 {
   private:
-    RibTrieNode _rib_head;
-    void _insert(const RtableEntry &route);
-    void _lookup(const ipaddr prefix);
+    static std::map <vrf, RibTrie*> _rib;
+    void _insert(const RtableEntry &route, vrf vrf_id);
+    void _lookup(const ipaddr prefix, vrf vrf_id);
 
   public:
     int num_routes;
-    static std::mutex rib_lock;
     void add_route(const std::string if_name, const std::string dst_ip,
-                   const std::string gw, const byte metric);
+                   const std::string gw, const byte metric, const vrf vrf_id);
     void get_routes(const std::string prefix, std::list<RtableEntry> &routes);
 };
 
