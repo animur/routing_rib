@@ -3,32 +3,22 @@
 
 RibTrieNode::RibTrieNode()
 {
-
-
-
 }
 
-
-
-
-void RibTrie:: insertRouteToTrie(RtableEntry& route)
+RibTrie::RibTrie(std::string vrf) : _vrf(vrf)
 {
-
-
-
 }
 
-
-void RibTrie:: deleteRouteFromTrie(RtableEntry& route)
+void RibTrie::insertRouteToTrie(RtableEntry &route)
 {
-
-
 }
 
-
-bool RibTrie:: searchRouteInTrie(RtableEntry& route)
+void RibTrie::deleteRouteFromTrie(RtableEntry &route)
 {
+}
 
+bool RibTrie::searchRouteInTrie(RtableEntry &route)
+{
 
     return false;
 }

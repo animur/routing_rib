@@ -6,31 +6,30 @@
 class RibTrieNode
 {
 
-  private:
-    byte _octet;
-    std::list<RtableEntry> _routes;
-    int _num_children;
-    std::map<byte, RibTrieNode*> _children;
+private:
+  byte _octet;
+  std::list<RtableEntry> _routes;
+  int _num_children;
+  std::map<byte, RibTrieNode *> _children;
 
-  public:
-    RibTrieNode();
-
+public:
+  RibTrieNode();
 };
 
 class RibTrie
 {
-    private:
-        RibTrieNode _rib_head;
-        std::mutex _rib_trie_lock;
-        int _vrf;
+private:
+  RibTrieNode _rib_head;
+  std::mutex _rib_trie_lock;
+  std::string _vrf;
 
-        RibTrieNode* _getTrieNode(RtableEntry& route);
+  RibTrieNode *_getTrieNode(RtableEntry &route);
 
-  public:
-    void insertRouteToTrie(RtableEntry& route);
-    void deleteRouteFromTrie(RtableEntry& route);
-    bool searchRouteInTrie(RtableEntry& route);
-
+public:
+  void insertRouteToTrie(RtableEntry &route);
+  void deleteRouteFromTrie(RtableEntry &route);
+  bool searchRouteInTrie(RtableEntry &route);
+  RibTrie(std::string);
 };
 
 #endif //__RIB_TRIE_H

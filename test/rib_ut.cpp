@@ -2,10 +2,9 @@
 
 #include "rib.h"
 
-
- int main ()
- {
+int main()
+{
     Rib test;
-    test.add_route("eth1", "10.1.2.1", "111.1.1.1", 251);
+    test.add_route("eth1", "10.1.2.1", "111.1.1.1", 251, "Apple");
     return 0;
- }
+}
