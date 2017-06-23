@@ -6,15 +6,17 @@
 class RibTrieNode
 {
 
-friend class RibTrie;
+  friend class RibTrie;
+
 private:
   byte _octet;
   std::list<RtableEntry> _routes;
   int _num_children;
   std::map<byte, RibTrieNode *> _children;
-public:
-  RibTrieNode();
 
+public:
+  RibTrieNode(byte octet);
+  RibTrieNode();
 };
 
 class RibTrie
@@ -23,7 +25,7 @@ private:
   RibTrieNode _rib_head;
   std::mutex _rib_trie_lock;
   std::string _vrf;
-  std::vector<RibTrieNode*> _rib_node_list;
+  std::vector<RibTrieNode *> _rib_node_list;
   RibTrieNode *_getTrieNode(RtableEntry &route);
 
 public:

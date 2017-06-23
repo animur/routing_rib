@@ -14,7 +14,9 @@ void Rib::_insert(const RtableEntry &route, std::string vrf)
         RibTrie *new_rib_trie = new RibTrie(vrf);
         _rib.insert(std::pair<std::string, RibTrie *>(vrf, new_rib_trie));
         new_rib_trie->insertRouteToTrie(route);
-    } else {
+    }
+    else
+    {
         /*Rib Trie corresponding to VRF already exists */
         it->second->insertRouteToTrie(route);
     }
