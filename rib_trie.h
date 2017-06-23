@@ -6,14 +6,15 @@
 class RibTrieNode
 {
 
+friend class RibTrie;
 private:
   byte _octet;
   std::list<RtableEntry> _routes;
   int _num_children;
   std::map<byte, RibTrieNode *> _children;
-
 public:
   RibTrieNode();
+
 };
 
 class RibTrie
@@ -22,14 +23,15 @@ private:
   RibTrieNode _rib_head;
   std::mutex _rib_trie_lock;
   std::string _vrf;
-
+  std::vector<RibTrieNode*> _rib_node_list;
   RibTrieNode *_getTrieNode(RtableEntry &route);
 
 public:
-  void insertRouteToTrie(RtableEntry &route);
-  void deleteRouteFromTrie(RtableEntry &route);
-  bool searchRouteInTrie(RtableEntry &route);
+  void insertRouteToTrie(const RtableEntry &route);
+  void deleteRouteFromTrie(const RtableEntry &route);
+  bool searchRouteInTrie(const RtableEntry &route);
   RibTrie(std::string);
+  ~RibTrie();
 };
 
 #endif //__RIB_TRIE_H

@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <map>
 #include <list>
+#include <vector>
 #include <iostream>
 
 typedef uint32_t ipaddr;
@@ -22,7 +23,7 @@ typedef enum {
 
 class RtableEntry
 {
-
+friend class RibTrie;
 private:
   byte _metric;
   ipaddr _gw_ip;

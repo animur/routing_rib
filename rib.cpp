@@ -13,12 +13,16 @@ void Rib::_insert(const RtableEntry &route, std::string vrf)
         /*New VRF. Create the RibTrie corresponding to the VRF*/
         RibTrie *new_rib_trie = new RibTrie(vrf);
         _rib.insert(std::pair<std::string, RibTrie *>(vrf, new_rib_trie));
+        new_rib_trie->insertRouteToTrie(route);
+    } else {
+        /*Rib Trie corresponding to VRF already exists */
+        it->second->insertRouteToTrie(route);
     }
 
     std::cout << route << std::endl;
 }
 
-void Rib::_lookup(const ipaddr prefixi, std::string vrf)
+void Rib::_lookup(const ipaddr prefix, std::string vrf)
 {
 }
 
