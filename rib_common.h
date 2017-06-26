@@ -23,7 +23,8 @@ typedef enum {
 
 class RtableEntry
 {
-friend class RibTrie;
+  friend class RibTrie;
+
 private:
   byte _metric;
   ipaddr _gw_ip;
@@ -32,10 +33,12 @@ private:
   bool _is_valid;
 
 public:
-  RtableEntry(byte metric, ipaddr dst_ip, ipaddr gw, std::string if_name);
+  RtableEntry(byte metric, ipaddr dst_ip, ipaddr gw_ip,
+              std::string if_name);
   void convStrToIp(ipaddr &ip, std::string str);
   bool check(RtableEntry &route, rib_err_t &err_code) const;
   friend std::ostream &operator<<(std::ostream &out, const RtableEntry &route);
+  friend bool operator<(const RtableEntry &lhs, const RtableEntry &rhs);
 };
 
 void convStrToIp(ipaddr &ip, std::string s);

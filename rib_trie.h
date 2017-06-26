@@ -29,9 +29,10 @@ private:
   RibTrieNode *_getTrieNode(RtableEntry &route);
 
 public:
-  void insertRouteToTrie(const RtableEntry &route);
+  void insertRouteInTrie(const RtableEntry &route);
   void deleteRouteFromTrie(const RtableEntry &route);
-  bool searchRouteInTrie(const RtableEntry &route);
+  void searchRouteInTrie(const ipaddr prefix,
+                         std::list<RtableEntry> &routes);
   RibTrie(std::string);
   ~RibTrie();
 };
