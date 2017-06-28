@@ -1,5 +1,15 @@
 #include "rib_common.h"
 
+
+
+RtableEntry::RtableEntry()
+{
+
+    _metric = 0;
+    _gw_ip = 0;
+    _dst_ip = 0;
+}
+
 RtableEntry::RtableEntry(byte metric,
 						 ipaddr dst_ip,
 						 ipaddr gw_ip,
@@ -44,6 +54,28 @@ bool operator == (const RtableEntry &lhs, const RtableEntry &rhs)
            );
 }
 
+RtableEntry& RtableEntry :: operator= (const RtableEntry& other)
+{
+
+    _metric = other._metric;
+    _dst_ip = other._dst_ip;
+    _gw_ip = other._gw_ip;
+    _if_name = other._if_name;
+    _is_valid = other._is_valid;
+    return *this;
+}
+
+
+RtableEntry::RtableEntry(const RtableEntry& other)
+{
+
+    _metric = other._metric;
+    _dst_ip = other._dst_ip;
+    _gw_ip = other._gw_ip;
+    _if_name = other._if_name;
+    _is_valid = other._is_valid;
+}
+
 void convStrToIp(ipaddr &ip, std::string s)
 {
 	std::string delimiter = ".";
@@ -66,3 +98,4 @@ void convStrToIp(ipaddr &ip, std::string s)
 	}
 	ip = ip | (stoul(token, nullptr, 0));
 }
+

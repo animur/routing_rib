@@ -49,15 +49,78 @@ void RibTrie::insertRouteInTrie(const RtableEntry &route)
         }
     }
 
-    nav->_routes.push_back(route);
+    std::list<RtableEntry>::const_iterator find_route = std::find(nav->_routes.begin(),
+            nav->_routes.end(),
+            route);
+
+    if (find_route == nav->_routes.end()) {
+
+        nav->_routes.push_back(route);
+        nav->_routes.sort();
+
+    }
     // Sort the routes by the route metric
-    nav->_routes.sort();
     _rib_trie_lock.unlock();
 }
 
 bool RibTrie::deleteRouteFromTrie(const RtableEntry &route)
 {
-    return false;
+
+    RibTrieNode *nav = &_rib_head;
+    bool res = true;
+    ipaddr ip_to_delete = route._dst_ip;
+    std::map<byte, RibTrieNode *>::const_iterator it;
+
+    _rib_trie_lock.lock();
+
+    for (int byte_count = 0; byte_count < 4; byte_count++)
+    {
+        byte curr_octet = (ip_to_delete >> (8 * (3 - byte_count))) & 0xff;
+
+        it = nav->_children.find(curr_octet);
+
+        if (it == nav->_children.end() &&
+                (byte_count < 4))
+        {
+            /* If we dont find an octet before reaching the end of
+             * the ip address to delete, the route to delete doesn't exist
+             */
+            res = false;
+            break;
+
+        }
+        else
+        {
+            nav = it->second;
+        }
+    }
+
+
+
+    if (res) {
+
+        /* RtableEntry class has an == operator. remove is sufficient*/
+        nav->_routes.remove(route);
+
+        /*
+        for (auto list_itr = nav->_routes.begin();
+                list_itr !=nav->_routes.end();) {
+
+            if (*list_itr == route) {
+                  list_itr = nav->_routes.erase(list_itr);
+
+            } else {
+                ++list_itr;
+            }
+        }
+        */
+
+        nav->_routes.sort();
+    }
+
+    _rib_trie_lock.unlock();
+
+    return res;
 }
 
 void RibTrie::searchRouteInTrie(const ipaddr prefix,

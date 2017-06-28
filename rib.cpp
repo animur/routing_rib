@@ -2,17 +2,33 @@
 #include "rib.h"
 
 /* Definition of the static variable */
-std::map<std::string, RibTrie *> Rib::_rib;
+//std::map<std::string, RibTrie *> Rib::_rib_vrf_tries;
+
+Rib* Rib:: rib_instance = nullptr;
+
+
+
+
+Rib* Rib::get_instance()
+{
+    if(!rib_instance) {
+        rib_instance = new Rib();
+        return rib_instance;
+    } else {
+
+        return rib_instance;
+    }
+}
 
 void Rib::_insert(const RtableEntry &route, std::string vrf)
 {
-    std::map<std::string, RibTrie *>::const_iterator it = _rib.find(vrf);
+    std::map<std::string, RibTrie *>::const_iterator it = _rib_vrf_tries.find(vrf);
 
-    if (it == _rib.end())
+    if (it == _rib_vrf_tries.end())
     {
         /*New VRF. Create the RibTrie corresponding to the VRF*/
         RibTrie *new_rib_trie = new RibTrie(vrf);
-        _rib.insert(std::pair<std::string, RibTrie *>(vrf, new_rib_trie));
+        _rib_vrf_tries.insert(std::pair<std::string, RibTrie *>(vrf, new_rib_trie));
         new_rib_trie->insertRouteInTrie(route);
     }
     else
@@ -24,9 +40,9 @@ void Rib::_insert(const RtableEntry &route, std::string vrf)
 
 bool Rib::_delete(const RtableEntry &route, std::string vrf)
 {
-    std::map<std::string, RibTrie *>::const_iterator it = _rib.find(vrf);
+    std::map<std::string, RibTrie *>::const_iterator it = _rib_vrf_tries.find(vrf);
 
-    if (it == _rib.end())
+    if (it == _rib_vrf_tries.end())
     {
         return false;
     }
@@ -41,9 +57,9 @@ bool Rib::_delete(const RtableEntry &route, std::string vrf)
 bool Rib::_lookup(const ipaddr prefix, const std::string vrf,
                   std::list<RtableEntry> &routes)
 {
-    std::map<std::string, RibTrie *>::const_iterator it = _rib.find(vrf);
+    std::map<std::string, RibTrie *>::const_iterator it = _rib_vrf_tries.find(vrf);
 
-    if (it == _rib.end())
+    if (it == _rib_vrf_tries.end())
     {
         /* VRF not present */
         return false;

@@ -21,6 +21,7 @@ typedef enum {
   RIB_ERR_INVALID_IF = 15,
 } rib_err_t;
 
+
 class RtableEntry
 {
   friend class RibTrie;
@@ -33,13 +34,16 @@ private:
   bool _is_valid;
 
 public:
+  RtableEntry();
   RtableEntry(byte metric, ipaddr dst_ip, ipaddr gw_ip,
               std::string if_name);
+  RtableEntry(const RtableEntry& other);
   void convStrToIp(ipaddr &ip, std::string str);
   bool check(RtableEntry &route, rib_err_t &err_code) const;
   friend std::ostream &operator<<(std::ostream &out, const RtableEntry &route);
   friend bool operator<(const RtableEntry &lhs, const RtableEntry &rhs);
   friend bool operator==(const RtableEntry &lhs, const RtableEntry &rhs);
+  RtableEntry& operator = (const RtableEntry& rhs);
 };
 
 void convStrToIp(ipaddr &ip, std::string s);
