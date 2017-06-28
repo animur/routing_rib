@@ -22,6 +22,22 @@ void Rib::_insert(const RtableEntry &route, std::string vrf)
     }
 }
 
+bool Rib::_delete(const RtableEntry &route, std::string vrf)
+{
+    std::map<std::string, RibTrie *>::const_iterator it = _rib.find(vrf);
+
+    if (it == _rib.end())
+    {
+        return false;
+    }
+    else
+    {
+        /*Rib Trie corresponding to VRF already exists */
+        return (it->second->deleteRouteFromTrie(route));
+    }
+}
+
+
 bool Rib::_lookup(const ipaddr prefix, const std::string vrf,
                   std::list<RtableEntry> &routes)
 {
@@ -34,7 +50,7 @@ bool Rib::_lookup(const ipaddr prefix, const std::string vrf,
     }
     else
     {
-        /*Rib Trie corresponding to VRF already exists 
+        /*Rib Trie corresponding to VRF already exists
          * Do longest prefix match in the corresponding Trie
          */
         it->second->searchRouteInTrie(prefix, routes);
@@ -42,6 +58,19 @@ bool Rib::_lookup(const ipaddr prefix, const std::string vrf,
     }
 
     //std::cout << route << std::endl;
+}
+
+bool Rib::del_route(const std::string if_name, const std::string dst,
+                    const std::string gw, const byte metric,
+                    const std::string vrf)
+{
+    ipaddr gw_ip = 0;
+    ipaddr dst_ip = 0;
+    convStrToIp(gw_ip, gw);
+    convStrToIp(dst_ip, dst);
+
+    const RtableEntry route_to_delete(metric, dst_ip, gw_ip, if_name);
+    return  _delete(route_to_delete, vrf);
 }
 
 void Rib::add_route(const std::string if_name, const std::string dst,

@@ -39,6 +39,7 @@ public:
   bool check(RtableEntry &route, rib_err_t &err_code) const;
   friend std::ostream &operator<<(std::ostream &out, const RtableEntry &route);
   friend bool operator<(const RtableEntry &lhs, const RtableEntry &rhs);
+  friend bool operator==(const RtableEntry &lhs, const RtableEntry &rhs);
 };
 
 void convStrToIp(ipaddr &ip, std::string s);

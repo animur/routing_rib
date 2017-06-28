@@ -30,7 +30,7 @@ private:
 
 public:
   void insertRouteInTrie(const RtableEntry &route);
-  void deleteRouteFromTrie(const RtableEntry &route);
+  bool deleteRouteFromTrie(const RtableEntry &route);
   void searchRouteInTrie(const ipaddr prefix,
                          std::list<RtableEntry> &routes);
   RibTrie(std::string);

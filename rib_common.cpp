@@ -24,8 +24,7 @@ std::ostream &operator<<(std::ostream &out, const RtableEntry &route)
 		<< " DST: " << std::hex << route._dst_ip
 		<< " GW: " << std::hex << route._gw_ip
 		<< " IF: " << route._if_name
-		<< " MET: " << std::dec << route._metric
-		<< std::endl;
+		<< " MET: " << std::dec << route._metric;
 
 	return out;
 }
@@ -34,6 +33,17 @@ bool operator<(const RtableEntry &lhs, const RtableEntry &rhs)
 {
 	return (lhs._metric < rhs._metric);
 }
+
+bool operator == (const RtableEntry &lhs, const RtableEntry &rhs)
+{
+
+    return ((lhs._metric  ==  rhs._metric)&&
+            (lhs._dst_ip  ==  rhs._dst_ip)&&
+            (lhs._gw_ip   ==  rhs._gw_ip)&&
+            (lhs._if_name ==  rhs._if_name)
+           );
+}
+
 void convStrToIp(ipaddr &ip, std::string s)
 {
 	std::string delimiter = ".";

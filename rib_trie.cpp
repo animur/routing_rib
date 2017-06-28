@@ -25,6 +25,7 @@ void RibTrie::insertRouteInTrie(const RtableEntry &route)
     ipaddr ip_to_insert = route._dst_ip;
     std::map<byte, RibTrieNode *>::const_iterator it;
 
+     _rib_trie_lock.lock();
     // std::cout << std::hex << ip_to_insert << std::endl;
     for (int byte_count = 0; byte_count < 4; byte_count++)
     {
@@ -51,10 +52,12 @@ void RibTrie::insertRouteInTrie(const RtableEntry &route)
     nav->_routes.push_back(route);
     // Sort the routes by the route metric
     nav->_routes.sort();
+    _rib_trie_lock.unlock();
 }
 
-void RibTrie::deleteRouteFromTrie(const RtableEntry &route)
+bool RibTrie::deleteRouteFromTrie(const RtableEntry &route)
 {
+    return false;
 }
 
 void RibTrie::searchRouteInTrie(const ipaddr prefix,
@@ -65,6 +68,7 @@ void RibTrie::searchRouteInTrie(const ipaddr prefix,
     bool match_octet_found = true;
     int byte_count = 0;
 
+    _rib_trie_lock.lock();
     while (match_octet_found)
     {
 
@@ -83,4 +87,5 @@ void RibTrie::searchRouteInTrie(const ipaddr prefix,
         byte_count++;
     }
     routes = nav->_routes;
+    _rib_trie_lock.unlock();
 }
