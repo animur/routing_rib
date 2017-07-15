@@ -1,2 +1,2 @@
 # routing_rib
-A thread safe Routing Information Base using longest prefix Tries
+A RIB (Routing Information Base) implementation in C++ with support for VRFs and mulithreaded access.
